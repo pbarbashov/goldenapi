@@ -1,4 +1,0 @@
-rootProject.name = 'services'
-include 'customerservice'
-include 'keycloak-extension'
-include 'commons'

@@ -37,6 +37,7 @@ services:
       CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
       CONFLUENT_METRICS_ENABLE: 'true'
       CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
+
   control-center:
     image: confluentinc/cp-enterprise-control-center:6.1.1
     hostname: control-center
@@ -52,6 +53,7 @@ services:
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
+
   postgresql:
     image: postgres:13
     restart: always
@@ -64,6 +66,7 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
     volumes:
       - ./pgdata1:/var/lib/postgresql/data
+
   keycloak:
     container_name: keycloak
     image: quay.io/keycloak/keycloak:12.0.4

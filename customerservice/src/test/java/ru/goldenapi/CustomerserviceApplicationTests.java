@@ -1,4 +1,4 @@
-package ru.customers;
+package ru.goldenapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
