@@ -1,13 +1,13 @@
-package ru.example.service1;
+package ru.customers;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Service1Application {
+public class CustomerServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Service1Application.class, args);
+		SpringApplication.run(CustomerServiceApplication.class, args);
 	}
 
 }
