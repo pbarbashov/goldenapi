@@ -7,5 +7,10 @@ public enum GoldHeaders {
     /**
      * Type for marshalling
      */
-    TYPE
+    TYPE,
+
+    /**
+     * Message identifier
+     */
+    MESSAGE_ID
 }

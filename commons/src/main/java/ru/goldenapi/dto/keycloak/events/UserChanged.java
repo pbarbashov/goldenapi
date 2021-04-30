@@ -13,4 +13,12 @@ import ru.goldenapi.dto.TransportMessage;
 @NoArgsConstructor
 @Accessors(chain = true, fluent = true)
 public class UserChanged implements TransportMessage {
+    private String userId;
+    private String username;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phoneNumber;
+    private boolean emailVerified;
+    private boolean enabled;
 }

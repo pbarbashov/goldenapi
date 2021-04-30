@@ -24,6 +24,7 @@ subprojects {
 
     dependencies {
         implementation("org.projectlombok:lombok")
+        implementation("javax.validation:validation-api")
         implementation("com.fasterxml.jackson.core:jackson-databind")
         implementation("com.fasterxml.jackson.core:jackson-core")
         implementation("com.fasterxml.jackson.core:jackson-annotations")

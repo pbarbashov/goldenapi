@@ -7,18 +7,21 @@ import org.keycloak.events.EventListenerProvider;
 import org.keycloak.events.EventListenerProviderFactory;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
+import reactor.kafka.sender.KafkaSender;
 import reactor.kafka.sender.SenderOptions;
+import ru.goldenapi.dto.TransportMessage;
 import ru.goldenapi.marshall.JsonSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class GoldenEventListenerProviderFactory implements EventListenerProviderFactory {
+    private KafkaSender<String, TransportMessage> kafkaSender;
+    private String topic;
 
     @Override
     public EventListenerProvider create(KeycloakSession keycloakSession) {
-
-        return new GoldenKeycloakEventListener();
+        return new GoldenKeycloakEventListener(kafkaSender, topic, keycloakSession);
     }
 
     @Override
@@ -28,11 +31,10 @@ public class GoldenEventListenerProviderFactory implements EventListenerProvider
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         addProp(producerProps,conf, ProducerConfig.BUFFER_MEMORY_CONFIG);
-
-        SenderOptions<Integer,String> senderOptions = SenderOptions.<Integer,String>create(producerProps)
+        topic = conf.get("outTopic","keycloak");
+        var senderOptions = SenderOptions.<String,TransportMessage>create(producerProps)
                 .maxInFlight(conf.getInt("maxInFlight",1024));
-
-
+        kafkaSender = KafkaSender.create(senderOptions);
     }
 
     private void addProp(Map<String, Object> producerProps, Config.Scope conf, String key) {
@@ -46,11 +48,11 @@ public class GoldenEventListenerProviderFactory implements EventListenerProvider
 
     @Override
     public void close() {
-
+        kafkaSender.close();
     }
 
     @Override
     public String getId() {
-        return "kafka-event-listener";
+        return "kafka-event-processor";
     }
 }
