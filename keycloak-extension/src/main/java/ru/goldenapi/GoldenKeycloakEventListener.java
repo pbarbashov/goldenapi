@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
+import org.keycloak.events.EventType;
 import org.keycloak.events.admin.AdminEvent;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
@@ -30,8 +31,9 @@ public class GoldenKeycloakEventListener implements EventListenerProvider {
 
     @Override
     public void onEvent(Event event) {
-        kafkaSender.send(eventMapper(event))
-                .subscribe();
+        if (event.getUserId() != null && (EventType.REGISTER == event.getType() || EventType.UPDATE_PROFILE == event.getType()))
+            kafkaSender.send(eventMapper(event))
+                    .subscribe();
     }
 
     private Mono<SenderRecord<String, TransportMessage, UUID>> eventMapper(Event event) {
@@ -40,7 +42,9 @@ public class GoldenKeycloakEventListener implements EventListenerProvider {
         RealmModel realm = keycloakSession.realms().getRealm(event.getRealmId());
         UserModel user = keycloakSession.users().getUserById(event.getUserId(), realm);
         UserChanged userChanged = new UserChanged();
-        userChanged.userId(event.getUserId())
+        userChanged
+                .eventType(event.getType().name())
+                .userId(event.getUserId())
                 .emailVerified(user.isEmailVerified())
                 .email(user.getEmail())
                 .enabled(user.isEnabled())

@@ -13,6 +13,7 @@ import ru.goldenapi.dto.TransportMessage;
 @NoArgsConstructor
 @Accessors(chain = true, fluent = true)
 public class UserChanged implements TransportMessage {
+    private String eventType;
     private String userId;
     private String username;
     private String firstName;
