@@ -35,6 +35,7 @@ public class GoldenKeycloakEventListener implements EventListenerProvider {
     }
 
     private Mono<SenderRecord<String, TransportMessage, UUID>> eventMapper(Event event) {
+        log.debug("Mapping event user id {}", event.getUserId());
         UUID messageId = UUID.randomUUID();
         RealmModel realm = keycloakSession.realms().getRealm(event.getRealmId());
         UserModel user = keycloakSession.users().getUserById(event.getUserId(), realm);
