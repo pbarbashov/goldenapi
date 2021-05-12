@@ -504,7 +504,7 @@
             <spi name="eventsListener">
                 <provider name = "kafka-event-processor" enabled="true">
                     <properties>
-                        <property name="bootstrapServers" value="broker:29092"/>
+                        <property name="bootstrap.servers" value="broker:29092"/>
                         <property name="outTopic" value="keklol"/>
                         <property name="maxInFlight" value="128"/>
                     </properties>
